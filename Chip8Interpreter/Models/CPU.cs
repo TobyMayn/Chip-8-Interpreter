@@ -40,14 +40,40 @@ namespace Chip8Interpreter.Model
         };
 
         public CPU() {
+            this.ResetCPU();
+        }
+
+        /// <summary>
+        /// Sets all CPU values to its initial starting values
+        /// </summary>
+        public void ResetCPU()
+        {
+            this.memory = new byte[0x1000];
+            this.pc = START_INDEX;
+            this.idr = 0;
+            this.delayTimer = 60;
+            this.soundTimer = 60;
+            this.display = new bool[SCREEN_WIDTH, SCREEN_HEIGHT];
+            this.ClearRegisters();
+            this.LoadFontsIntoMemory();
+        }
+
+        public void ClearRegisters()
+        {
             // Set all registers to 0 on instantiation
-            for (int i = 0; i < registers.Length-1; i++)
+            for (int i = 0; i < registers.Length - 1; i++)
             {
                 this.registers[i] = 0x0;
             }
-            
-            // Set font data in the first 512 bytes
-            for (int i = 0; i < this.fonts.Length-1; i++)
+        }
+
+
+        /// <summary>
+        /// Loads font data into the first sections of the memory
+        /// </summary>
+        private void LoadFontsIntoMemory()
+        {
+            for (int i = 0; i < this.fonts.Length - 1; i++)
             {
                 this.memory[i] = (byte)this.fonts[i];
             }
