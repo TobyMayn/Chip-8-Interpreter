@@ -14,10 +14,6 @@ namespace Chip8Interpreter.Model
         private byte delayTimer = 60;
         private byte soundTimer = 60;
 
-        public const int SCREEN_WIDTH = 64;
-        public const int SCREEN_HEIGHT = 32;
-        private bool[,] display = new bool[SCREEN_WIDTH, SCREEN_HEIGHT];
-
         private int[] registers = new int[16];
 
         private readonly int[] fonts = new int[] {
@@ -53,7 +49,6 @@ namespace Chip8Interpreter.Model
             this.idr = 0;
             this.delayTimer = 60;
             this.soundTimer = 60;
-            this.display = new bool[SCREEN_WIDTH, SCREEN_HEIGHT];
             this.ClearRegisters();
             this.LoadFontsIntoMemory();
         }
@@ -66,7 +61,6 @@ namespace Chip8Interpreter.Model
                 this.registers[i] = 0x0;
             }
         }
-
 
         /// <summary>
         /// Loads font data into the first sections of the memory
