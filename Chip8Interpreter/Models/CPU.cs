@@ -6,15 +6,15 @@ namespace Chip8Interpreter.Model
     {
         private const ushort START_INDEX = 0x200;
         // Setting memory to 4096 bytes
-        private byte[] memory = new byte[0x1000];
-        private ushort pc = START_INDEX;
+        private byte[] _memory = new byte[0x1000];
+        private ushort _pc = START_INDEX;
         // index register called “I” which is used to point at locations in memory
-        private ushort idr = 0;
-        private Stack<ushort> stack = new Stack<ushort>();
-        private byte delayTimer = 60;
-        private byte soundTimer = 60;
+        private ushort _idr = 0;
+        private Stack<ushort> _stack = new Stack<ushort>();
+        private byte _delayTimer = 60;
+        private byte _soundTimer = 60;
 
-        private int[] registers = new int[16];
+        private int[] _registers = new int[16];
 
         private readonly int[] fonts = new int[] {
             0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -44,11 +44,11 @@ namespace Chip8Interpreter.Model
         /// </summary>
         public void ResetCPU()
         {
-            this.memory = new byte[0x1000];
-            this.pc = START_INDEX;
-            this.idr = 0;
-            this.delayTimer = 60;
-            this.soundTimer = 60;
+            this._memory = new byte[0x1000];
+            this._pc = START_INDEX;
+            this._idr = 0;
+            this._delayTimer = 60;
+            this._soundTimer = 60;
             this.ClearRegisters();
             this.LoadFontsIntoMemory();
         }
@@ -56,9 +56,9 @@ namespace Chip8Interpreter.Model
         public void ClearRegisters()
         {
             // Set all registers to 0 on instantiation
-            for (int i = 0; i < registers.Length - 1; i++)
+            for (int i = 0; i < _registers.Length - 1; i++)
             {
-                this.registers[i] = 0x0;
+                this._registers[i] = 0x0;
             }
         }
 
@@ -69,7 +69,7 @@ namespace Chip8Interpreter.Model
         {
             for (int i = 0; i < this.fonts.Length - 1; i++)
             {
-                this.memory[i] = (byte)this.fonts[i];
+                this._memory[i] = (byte)this.fonts[i];
             }
         }
     }
