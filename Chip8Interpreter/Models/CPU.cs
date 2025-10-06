@@ -1,6 +1,6 @@
 ﻿
 
-namespace Chip8Interpreter.Model
+namespace Chip8Interpreter.Models
 {
     public class CPU
     {
