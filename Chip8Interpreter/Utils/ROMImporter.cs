@@ -8,7 +8,15 @@ namespace Chip8Interpreter.Utils
 
         public ROMImporter(string filePath)
         {
-            this._rom = ReadROMFile(filePath);
+            try
+            {
+                this._rom = ReadROMFile(filePath);
+            }
+            catch (FileNotFoundException e)
+            {
+                throw new FileNotFoundException(e.Message);
+            }
+            
         }
 
         private byte[] ReadROMFile(string filePath)
