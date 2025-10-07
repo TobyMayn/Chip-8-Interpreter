@@ -1,0 +1,55 @@
+﻿namespace Chip8Interpreter.Models
+{
+    public class Memory
+    {
+        private const ushort START_INDEX = 0x200;
+        private byte[] _memory;
+
+        private readonly int[] fonts = new int[] {
+            0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
+            0x20, 0x60, 0x20, 0x20, 0x70, // 1
+            0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
+            0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
+            0x90, 0x90, 0xF0, 0x10, 0x10, // 4
+            0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
+            0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
+            0xF0, 0x10, 0x20, 0x40, 0x40, // 7
+            0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
+            0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
+            0xF0, 0x90, 0xF0, 0x90, 0x90, // A
+            0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
+            0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+            0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+            0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+            0xF0, 0x80, 0xF0, 0x80, 0x80  // F
+        };
+
+        public Memory() 
+        { 
+            _memory = new byte[0x1000];
+            this.LoadFontsIntoMemory();
+        }
+
+
+        public void LoadROMToMemory(byte[] rom)
+        {
+            for (int i = START_INDEX; i < START_INDEX + rom.Length; i++)
+            {
+               
+            }
+        }
+
+        /// <summary>
+        /// Loads font data into the first sections of the memory
+        /// </summary>
+        private void LoadFontsIntoMemory()
+        {
+            for (int i = 0; i < this.fonts.Length - 1; i++)
+            {
+                this._memory[i] = (byte)this.fonts[i];
+            }
+        }
+
+        
+    }
+}
