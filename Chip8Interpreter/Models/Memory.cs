@@ -33,9 +33,9 @@
 
         public void LoadROMToMemory(byte[] rom)
         {
-            for (int i = START_INDEX; i < START_INDEX + rom.Length; i++)
+            for (int i = 0; i < rom.Length; i++)
             {
-               
+                this._memory[i+START_INDEX] = rom[i];
             }
         }
 
