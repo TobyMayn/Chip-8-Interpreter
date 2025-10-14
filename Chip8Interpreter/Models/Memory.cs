@@ -1,9 +1,12 @@
-﻿namespace Chip8Interpreter.Models
+﻿using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
+
+namespace Chip8Interpreter.Models
 {
     public class Memory
     {
         private const ushort START_INDEX = 0x200;
-        private byte[] _memory;
+        public byte[] memory { get; }
 
         private readonly int[] fonts = new int[] {
             0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -26,7 +29,7 @@
 
         public Memory() 
         { 
-            _memory = new byte[0x1000];
+            memory = new byte[0x1000];
             this.LoadFontsIntoMemory();
         }
 
@@ -35,7 +38,7 @@
         {
             for (int i = 0; i < rom.Length; i++)
             {
-                this._memory[i+START_INDEX] = rom[i];
+                this.memory[i+START_INDEX] = rom[i];
             }
         }
 
@@ -46,9 +49,20 @@
         {
             for (int i = 0; i < this.fonts.Length - 1; i++)
             {
-                this._memory[i] = (byte)this.fonts[i];
+                this.memory[i] = (byte)this.fonts[i];
             }
         }
+
+        public byte GetByteOfMemory(int index)
+        {
+            return this.memory[index];
+        }
+
+        public ushort GetInstruction(int index)
+        {
+            return (ushort)(this.memory[index] + this.memory[index+1]);
+        }
+        
 
         
     }
