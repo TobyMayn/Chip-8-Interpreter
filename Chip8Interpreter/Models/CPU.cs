@@ -45,7 +45,7 @@ namespace Chip8Interpreter.Models
             this.Registers[register] = value;
         }
 
-        private void AddToRegister(byte register, byte value)
+        public void AddToRegister(byte register, byte value)
         {
             this.Registers[register] += value;
         }
