@@ -60,10 +60,8 @@ namespace Chip8Interpreter.Models
 
         public ushort GetInstruction(int index)
         {
-            return (ushort)(this.memory[index] + this.memory[index+1]);
+            Console.WriteLine((ushort)((this.memory[index] << 8) | this.memory[index + 1]));
+            return (ushort)((this.memory[index] << 8) | this.memory[index + 1]);
         }
-        
-
-        
     }
 }

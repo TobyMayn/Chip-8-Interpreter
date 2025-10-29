@@ -1,7 +1,51 @@
 ﻿@page "/"
+@rendermode InteractiveServer
+
+@using Chip8Interpreter
+@using Chip8Interpreter.Models
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
+<table>
+    @for (int i = 0; i < 32; i++)
+    {
+        int x = i;
+        <tr @key=x>
+            @for(int j=0; j<64;j++)
+            {
+                <td>
+                    @if (emulator.display.Screen[j, x])
+                    {
+                        <div class="bg-black;" style="width: 10px; height:10px;"></div>
+                    }
+                    else
+                    {
+                        <div class="bg-white;" style="width: 10px; height:10px;"></div>
+                    }
+                </td>
+            }
+        </tr>
+    }
+</table>
+<p>@emulator.display.Screen</p>
 
 Welcome to your new app.
+<button class="btn btn-primary" @onclick="Run">Click me</button>
+<button class="btn btn-secondary" @onclick="Stop">Stop it</button>
+
+@code{
+    Emulator emulator = new Emulator();
+
+    private void Run()
+    {
+        Console.WriteLine("Running emulator");
+        emulator.playing = true;
+        emulator.RunEmulator(); 
+    }
+
+    private void Stop()
+    {
+        emulator.playing = false;
+    }
+}
