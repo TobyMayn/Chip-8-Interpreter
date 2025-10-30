@@ -1,28 +1,23 @@
 ﻿@page "/"
 @rendermode InteractiveServer
 
-@using Blazor.Extensions.Canvas
 @using Chip8Interpreter
 @using Chip8Interpreter.Models
+@using Blazor.Extensions
+@using Blazor.Extensions.Canvas
+@using Blazor.Extensions.Canvas.Canvas2D
+
 @inject IJSRuntime JsRuntime;
 
+<script src="_content/Blazor.Extensions.Canvas/blazor.extensions.canvas.js"></script>
 <script>
-    // Game loop js implementation created by Hans Enthoven
-    // the main gameloop. Will be called 60 times per second by requestAnimationFrame
     function gameLoop(timeStamp) {
         window.requestAnimationFrame(gameLoop);
-        game.instance.invokeMethodAsync('GameLoop', timeStamp, game.canvases[0].width, game.canvases[0].height);
+        theInstance.invokeMethodAsync('GameLoop', timeStamp);
     }
 
-    // will be called by blazor to initialize the game and register the game instance.
     window.initGame = (instance) => {
-        var canvasContainer = document.getElementById('canvasContainer'),
-            canvases = canvasContainer.getElementsByTagName('canvas') || [];
-
-        window.game = {
-            instance: instance,
-            canvases: canvases
-        };
+        window.theInstance = instance;
         window.requestAnimationFrame(gameLoop);
     };
 </script>
@@ -30,8 +25,11 @@
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
-<BECanvas @ref="_canvasReference"></BECanvas>
-<p>@emulator.display.Screen</p>
+
+<div id="theCanvas" style="position: fixed; opacity: 1; width: 200px; height: 100px">
+    <BECanvas Width="300" Height="400" @ref="_canvasReference"></BECanvas>
+</div>
+
 
 Welcome to your new app.
 <button class="btn btn-primary" @onclick="Run">Click me</button>
@@ -39,7 +37,8 @@ Welcome to your new app.
 
 @code{
     Emulator emulator = new Emulator();
-    BECanvasComponent _canvasReference = null;
+    BECanvasComponent ?_canvasReference = null;
+    Canvas2DContext ?_outputCanvasContext;
 
     private void Run()
     {
@@ -59,6 +58,21 @@ Welcome to your new app.
         {
             return;
         }
+
+        _outputCanvasContext = await _canvasReference.CreateCanvas2DAsync();
+
         await JsRuntime.InvokeAsync<object>("initGame", DotNetObjectReference.Create(this));
+    }
+
+    [JSInvokable]
+    public async ValueTask GameLoop(float timeStamp)
+    {
+        await _outputCanvasContext.ClearRectAsync(0, 0, 300, 400);
+
+        await _outputCanvasContext.SetFillStyleAsync("green");
+        await _outputCanvasContext.FillRectAsync(10, 50, 300, 100);
+
+        await _outputCanvasContext.SetFontAsync("24px verdana");
+        await _outputCanvasContext.StrokeTextAsync($"time: {timeStamp}", 20, 80);
     }
 }
